@@ -1,9 +1,10 @@
-import { Header } from '../../components/Header'
+import { Banner } from './components/Banner'
 
+import * as S from './styles'
 export function Home() {
   return (
-    <>
-      <h1>Hello</h1>
-    </>
+    <S.HomeContainer>
+      <Banner />
+    </S.HomeContainer>
   )
 }
