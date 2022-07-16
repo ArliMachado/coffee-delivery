@@ -7,6 +7,7 @@ export const HeaderContainer = styled.header`
 
   height: 10rem;
 
+  // TODO Definir opacidade quando for a Home
   /* opacity: 0.4; */
 `
 
