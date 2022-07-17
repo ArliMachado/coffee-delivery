@@ -1,12 +1,10 @@
 import styled from 'styled-components'
 
-export const HomeContainer = styled.div`
-  position: relative;
-  /* margin-top: 5.6rem; */
-`
+export const HomeContainer = styled.div``
 
 export const CoffeesContent = styled.div`
   margin-top: 2rem;
+  margin-bottom: 10rem;
 
   strong {
     font-family: 'Baloo 2';
