@@ -3,6 +3,8 @@ import backgroundBanner from '../../../../assets/background-banner.svg'
 
 export const BannerContainer = styled.div`
   height: 34rem;
+  display: flex;
+  align-items: center;
   position: relative;
 `
 
