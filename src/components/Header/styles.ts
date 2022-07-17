@@ -1,14 +1,19 @@
 import styled from 'styled-components'
 
-export const HeaderContainer = styled.header`
+interface IHeaderContainerProps {
+  isHomePage: boolean
+}
+
+export const HeaderContainer = styled.header<IHeaderContainerProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   height: 10rem;
+  padding: 2rem 0;
 
   // TODO Definir opacidade quando for a Home
-  /* opacity: 0.4; */
+  opacity: ${({ isHomePage }) => (isHomePage ? '0.4' : '1')};
 `
 
 export const CheckoutInfo = styled.div`
