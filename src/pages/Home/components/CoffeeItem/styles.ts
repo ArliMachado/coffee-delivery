@@ -97,6 +97,7 @@ export const Quantity = styled.div`
   width: 4.5rem;
   height: 2.37rem;
   padding: 0.5rem;
+  border-radius: 0.375rem;
 
   span {
     color: ${({ theme }) => theme['base-title']};
@@ -111,6 +112,10 @@ export const Quantity = styled.div`
     background: none;
     cursor: pointer;
     color: ${({ theme }) => theme.purple};
+
+    &:hover {
+      color: ${({ theme }) => theme['purple-dark']};
+    }
   }
 `
 
@@ -123,8 +128,14 @@ export const CartButton = styled.span`
   align-items: center;
   justify-content: center;
 
+  cursor: pointer;
+
   ${({ theme }) => css`
     background: ${theme['purple-dark']};
-    color: ${theme.white};
+    color: ${theme['base-card']};
+
+    &:hover {
+      background: ${theme.purple};
+    }
   `}
 `
