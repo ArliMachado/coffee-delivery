@@ -1,10 +1,17 @@
 import styled from 'styled-components'
 
-export const HomeContainer = styled.div``
+export const HomeContainer = styled.div`
+  background: ${({ theme }) => theme.background};
+
+  padding: 0 10rem;
+`
 
 export const CoffeesContent = styled.div`
   margin-top: 2rem;
   margin-bottom: 10rem;
+
+  display: flex;
+  flex-direction: column;
 
   strong {
     font-family: 'Baloo 2';
@@ -16,6 +23,7 @@ export const CoffeesContent = styled.div`
 `
 export const CoffeesList = styled.div`
   margin-top: 3.375rem;
+  flex: 1;
 
   display: grid;
   grid-template-columns: repeat(4, 16rem);
