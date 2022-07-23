@@ -11,6 +11,7 @@ const BaseInput = styled.input`
   padding: 0.75rem;
   border-radius: 0.25rem;
   border: 1px solid ${({ theme }) => theme['base-button']};
+  outline: none;
 
   display: flex;
   align-items: center;
@@ -24,6 +25,10 @@ const BaseInput = styled.input`
     font-size: 0.875rem;
     color: ${({ theme }) => theme['base-label']};
     line-height: 1.13rem;
+  }
+
+  &:focus {
+    border: 1px solid ${({ theme }) => theme['yellow-dark']};
   }
 `
 export const CepInput = styled(BaseInput)`
