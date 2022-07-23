@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const CheckoutContainer = styled.div`
   padding: 2rem 10rem;
@@ -12,10 +12,8 @@ export const CheckoutContainer = styled.div`
     line-height: 1.46px;
   }
 `
-export const AddressContainer = styled.div`
+const BaseContainer = styled.div`
   width: 40rem;
-  height: 23.25rem;
-  margin-top: 0.9rem;
   border-radius: 0.375rem;
 
   padding: 2.5rem;
@@ -25,7 +23,11 @@ export const AddressContainer = styled.div`
   background: ${({ theme }) => theme['base-card']};
 `
 
-export const AddressTitleInfo = styled.div`
+type TitleinfoProps = {
+  iconType: 'address' | 'payment'
+}
+
+export const TitleInfo = styled.div<TitleinfoProps>`
   display: flex;
   align-items: flex-start;
   margin-bottom: 2rem;
@@ -33,7 +35,8 @@ export const AddressTitleInfo = styled.div`
   gap: 0.5rem;
 
   svg {
-    color: ${({ theme }) => theme['yellow-dark']};
+    color: ${({ theme, iconType }) =>
+      iconType === 'address' ? theme['yellow-dark'] : theme.purple};
   }
 
   h3 {
@@ -49,8 +52,58 @@ export const AddressTitleInfo = styled.div`
   }
 `
 
-export const AddressTitle = styled.span`
+export const Title = styled.span`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+`
+
+export const AddressContainer = styled(BaseContainer)`
+  margin-top: 0.9rem;
+  height: 23.25rem;
+`
+
+export const PaymentContainer = styled(BaseContainer)`
+  height: 12.9rem;
+  margin-top: 0.75rem;
+`
+
+export const PaymentTypeContent = styled.div`
+  /* margin-top: 2rem; */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+`
+
+type RadioBoxProps = {
+  isActive?: boolean
+}
+
+export const RadioBox = styled.button<RadioBoxProps>`
+  height: 3.18rem;
+  width: 11.1rem;
+  padding: 1rem;
+
+  border: ${({ theme, isActive }) =>
+    isActive ? `1px solid ${theme.purple}` : `0`};
+  border-radius: 0.375rem;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+
+  font-size: 0.75rem;
+
+  background: ${({ theme, isActive }) =>
+    isActive ? theme['purple-light'] : theme['base-button']};
+
+  svg {
+    color: ${({ theme }) => theme.purple};
+  }
+
+  &:hover {
+    background: ${({ theme }) => theme['base-hover']};
+  }
 `
