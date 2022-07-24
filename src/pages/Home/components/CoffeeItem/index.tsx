@@ -1,4 +1,5 @@
-import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
+import { ShoppingCartSimple } from 'phosphor-react'
+import { QuantityButtons } from '../../../../components/QuantityButtons'
 import * as S from './styles'
 
 interface ICoffeItemProps {
@@ -35,16 +36,7 @@ export function CoffeeItem({
           <strong>{price}</strong>
         </span>
         <S.CartButtons>
-          <S.Quantity>
-            <button>
-              <Minus weight="bold" size={14} />
-            </button>
-            <span>{quantity}</span>
-
-            <button>
-              <Plus weight="bold" size={14} />
-            </button>
-          </S.Quantity>
+          <QuantityButtons />
 
           <S.CartButton>
             <ShoppingCartSimple weight="fill" size={22} />
