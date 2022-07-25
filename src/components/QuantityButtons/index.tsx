@@ -1,9 +1,13 @@
 import { Minus, Plus } from 'phosphor-react'
 import * as S from './styles'
 
-export function QuantityButtons() {
+interface IQuantityButtonsProps {
+  size: 'small' | 'medium'
+}
+
+export function QuantityButtons({ size }: IQuantityButtonsProps) {
   return (
-    <S.Container>
+    <S.Container size={size}>
       <button>
         <Minus weight="bold" size={14} />
       </button>

@@ -1,33 +1,50 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+type ContainerProps = {
+  size: 'small' | 'medium'
+}
 
-  background: ${({ theme }) => theme['base-button']};
+const containerModifiers = {
+  small: () => css`
+    height: 2rem;
+    width: 4.5rem;
+  `,
+  medium: () => css`
+    height: 2.37rem;
+    width: 5.6rem;
+  `,
+}
 
-  width: 4.5rem;
-  height: 2.37rem;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-
-  span {
-    color: ${({ theme }) => theme['base-title']};
-    line-height: 1.3rem;
-  }
-
-  button {
+export const Container = styled.div<ContainerProps>`
+  ${({ theme, size }) => css`
     display: flex;
     align-items: center;
-    justify-content: center;
-    border: 0;
-    background: none;
-    cursor: pointer;
-    color: ${({ theme }) => theme.purple};
+    justify-content: space-between;
 
-    &:hover {
-      color: ${({ theme }) => theme['purple-dark']};
+    background: ${theme['base-button']};
+
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+
+    span {
+      color: ${theme['base-title']};
+      line-height: 1.3rem;
     }
-  }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      background: none;
+      cursor: pointer;
+      color: ${theme.purple};
+
+      &:hover {
+        color: ${theme['purple-dark']};
+      }
+    }
+
+    ${!!size && containerModifiers[size]()}
+  `}
 `
