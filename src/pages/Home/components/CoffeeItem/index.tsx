@@ -36,7 +36,7 @@ export function CoffeeItem({
           <strong>{price}</strong>
         </span>
         <S.CartButtons>
-          <QuantityButtons />
+          <QuantityButtons size="medium" />
 
           <S.CartButton>
             <ShoppingCartSimple weight="fill" size={22} />

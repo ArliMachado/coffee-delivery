@@ -15,6 +15,7 @@ const BaseInput = styled.input`
 
   display: flex;
   align-items: center;
+  transition: 0.2s border;
 
   ${({ theme }) => css`
     background: ${theme['base-input']};
