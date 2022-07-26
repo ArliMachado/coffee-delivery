@@ -34,7 +34,7 @@ export const LocaleInfo = styled.span`
   font-size: 0.875rem;
 `
 
-export const CartInfo = styled.span`
+export const CartInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,4 +45,24 @@ export const CartInfo = styled.span`
 
   background: ${({ theme }) => theme['yellow-light']};
   color: ${({ theme }) => theme['yellow-dark']};
+  position: relative;
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    border-radius: 50%;
+    width: 1.25rem;
+    height: 1.25rem;
+    right: -0.52rem;
+    top: -0.5rem;
+
+    background: ${({ theme }) => theme['yellow-dark']};
+    color: ${({ theme }) => theme.white};
+
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
 `

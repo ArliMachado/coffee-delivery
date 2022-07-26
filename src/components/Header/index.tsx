@@ -18,6 +18,7 @@ export function Header() {
         <NavLink to="/checkout">
           <S.CartInfo>
             <ShoppingCart weight="fill" size={22} />
+            <span>3</span>
           </S.CartInfo>
         </NavLink>
       </S.CheckoutInfo>
