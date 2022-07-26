@@ -102,6 +102,8 @@ export const CartButton = styled.span`
     background: ${theme['purple-dark']};
     color: ${theme['base-card']};
 
+    transition: 0.1s background;
+
     &:hover {
       background: ${theme.purple};
     }
