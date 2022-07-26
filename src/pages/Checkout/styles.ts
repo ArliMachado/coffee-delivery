@@ -5,7 +5,6 @@ export const CheckoutContainer = styled.div`
 
   padding: 2rem 10rem;
   height: 100vh;
-  /* flex-direction: column; */
   gap: 2rem;
 `
 
@@ -164,7 +163,10 @@ export const SummaryValue = styled.span`
     }
   }
 `
-export const TotalValue = styled(SummaryValue)`
+export const TotalValue = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   p {
     font-size: 1.25rem;
     font-weight: 700;

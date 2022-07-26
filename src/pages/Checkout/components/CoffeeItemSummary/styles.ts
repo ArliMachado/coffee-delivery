@@ -27,7 +27,7 @@ export const ProductInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   p {
-    color: ${({ theme }) => theme['base-subtitle']};
+    /* color: ${({ theme }) => theme['base-subtitle']}; */
     line-height: 1.3rem;
   }
 `
