@@ -2,7 +2,7 @@ import { ShoppingCartSimple } from 'phosphor-react'
 import { QuantityButtons } from '../../../../components/QuantityButtons'
 import * as S from './styles'
 
-interface ICoffeItemProps {
+interface ICoffeProps {
   id: number
   image: string
   tags: string[]
@@ -12,33 +12,54 @@ interface ICoffeItemProps {
   quantity: number
 }
 
+interface ICoffeItemProps {
+  coffee: ICoffeProps
+  onAddQuantity: () => void
+  onReduceQuantity: () => void
+  onAddToCart: (coffee: ICoffeProps) => void
+}
+
 export function CoffeeItem({
-  image,
-  tags,
-  title,
-  description,
-  price,
-  quantity,
+  coffee,
+  onAddQuantity,
+  onReduceQuantity,
+  onAddToCart,
 }: ICoffeItemProps) {
+  function handleAddQuantity() {
+    onAddQuantity()
+  }
+  function handleReduceQuantity() {
+    onReduceQuantity()
+  }
+
+  function handleAddToCart(coffee: ICoffeProps) {
+    onAddToCart(coffee)
+  }
+
   return (
     <S.CoffeeContainer>
-      <img src={image} alt="" />
+      <img src={coffee.image} alt="" />
       <ul>
-        {tags.map((tag) => (
+        {coffee.tags.map((tag) => (
           <li key={tag}>{tag}</li>
         ))}
       </ul>
-      <strong>{title}</strong>
-      <p>{description}</p>
+      <strong>{coffee.title}</strong>
+      <p>{coffee.description}</p>
       <S.CartContent>
         <span>
           R$
-          <strong>{price}</strong>
+          <strong>{coffee.price}</strong>
         </span>
         <S.CartButtons>
-          <QuantityButtons size="medium" />
+          <QuantityButtons
+            onAddQuantity={handleAddQuantity}
+            onReduceQuantity={handleReduceQuantity}
+            size="medium"
+            quantity={coffee.quantity}
+          />
 
-          <S.CartButton>
+          <S.CartButton onClick={() => handleAddToCart(coffee)}>
             <ShoppingCartSimple weight="fill" size={22} />
           </S.CartButton>
         </S.CartButtons>

@@ -87,9 +87,10 @@ export const CartButtons = styled.div`
   gap: 0.5rem;
 `
 
-export const CartButton = styled.span`
+export const CartButton = styled.button`
   width: 2.375rem;
   height: 2.375rem;
+  border: 0;
   border-radius: 0.375rem;
 
   display: flex;
