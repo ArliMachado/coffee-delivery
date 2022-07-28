@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo, useReducer } from 'react'
+import { createContext, ReactNode, useEffect, useMemo, useReducer } from 'react'
 import {
   addItemToCartAction,
   increaseQuantityItemInCartAction,
@@ -25,9 +25,21 @@ export const CheckoutContext = createContext({} as ICheckoutContextProps)
 export function CheckoutcontextProvider({
   children,
 }: ICheckoutContextProviderProps) {
-  const [checkoutState, dispatch] = useReducer(checkoutReducer, {
-    coffees: [],
-  })
+  const [checkoutState, dispatch] = useReducer(
+    checkoutReducer,
+    {
+      coffees: [],
+    },
+    () => {
+      const storedStateAsJSON = localStorage.getItem(
+        '@ignite-desafio:coffee-delivery',
+      )
+
+      if (storedStateAsJSON) {
+        return JSON.parse(storedStateAsJSON)
+      }
+    },
+  )
 
   const { coffees } = checkoutState
 
@@ -52,6 +64,11 @@ export function CheckoutcontextProvider({
   function removeItemFromCart(id: number) {
     dispatch(removeItemFromCartAction(id))
   }
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(checkoutState)
+    localStorage.setItem('@ignite-desafio:coffee-delivery', stateJSON)
+  }, [checkoutState])
 
   return (
     <CheckoutContext.Provider
