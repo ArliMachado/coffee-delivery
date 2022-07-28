@@ -10,7 +10,9 @@ import * as S from './styles'
 export function Header() {
   const { totalItensCheckout } = useContext(CheckoutContext)
 
-  const totalItens = String(totalItensCheckout)
+  const totalItens = totalItensCheckout
+
+  const totalItensVisible = totalItens > 0
 
   return (
     <S.HeaderContainer>
@@ -26,7 +28,7 @@ export function Header() {
         <NavLink to="/checkout">
           <S.CartInfo>
             <ShoppingCart weight="fill" size={22} />
-            <span>{totalItens}</span>
+            {totalItensVisible && <span>{totalItens}</span>}
           </S.CartInfo>
         </NavLink>
       </S.CheckoutInfo>
