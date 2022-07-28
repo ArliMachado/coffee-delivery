@@ -129,7 +129,7 @@ export const CheckoutSumaryContainer = styled.div`
 `
 export const SumaryContent = styled.div`
   width: 28rem;
-  height: 31.1rem;
+  min-height: 31.1rem;
   padding: 2.5rem;
 
   background: ${({ theme }) => theme['base-card']};

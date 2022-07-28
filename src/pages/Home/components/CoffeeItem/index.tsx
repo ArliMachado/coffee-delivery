@@ -1,6 +1,8 @@
 import { ShoppingCartSimple } from 'phosphor-react'
+import { useMemo } from 'react'
 import { QuantityButtons } from '../../../../components/QuantityButtons'
 import { ICoffeProps } from '../../../../reducers/checkout/reducers'
+import formatValue from '../../../../utils/formatValue'
 import * as S from './styles'
 
 interface ICoffeItemProps {
@@ -16,6 +18,8 @@ export function CoffeeItem({
   onReduceQuantity,
   onAddToCart,
 }: ICoffeItemProps) {
+  const { image, tags, title, description, price, quantity } = coffee
+
   function handleAddQuantity() {
     onAddQuantity()
   }
@@ -27,27 +31,31 @@ export function CoffeeItem({
     onAddToCart(coffee)
   }
 
+  const itemPriceFormatted = useMemo(() => {
+    return formatValue(price)
+  }, [price])
+
   return (
     <S.CoffeeContainer>
-      <img src={coffee.image} alt="" />
+      <img src={image} alt="" />
       <ul>
-        {coffee.tags.map((tag) => (
+        {tags.map((tag) => (
           <li key={tag}>{tag}</li>
         ))}
       </ul>
-      <strong>{coffee.title}</strong>
-      <p>{coffee.description}</p>
+      <strong>{title}</strong>
+      <p>{description}</p>
       <S.CartContent>
         <span>
           R$
-          <strong>{coffee.price}</strong>
+          <strong>{price}</strong>
         </span>
         <S.CartButtons>
           <QuantityButtons
             onAddQuantity={handleAddQuantity}
             onReduceQuantity={handleReduceQuantity}
             size="medium"
-            quantity={coffee.quantity}
+            quantity={quantity}
           />
 
           <S.CartButton onClick={() => handleAddToCart(coffee)}>

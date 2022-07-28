@@ -5,20 +5,65 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
-import { useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { NewFormAddress } from './components/NewFormAddress'
 import * as S from './styles'
 
-import expressoImg from '../../assets/coffees/Expresso.svg'
-import latteImg from '../../assets/coffees/Latte.svg'
+import { CheckoutContext } from '../../contexts/CheckoutContext'
 import { CoffeeItemSummary } from './components/CoffeeItemSummary'
+import { ICoffeProps } from '../../reducers/checkout/reducers'
+import formatValue from '../../utils/formatValue'
+
+interface IBalance {
+  totalItens: number
+  totalCheckout: number
+}
 
 export function Checkout() {
+  const freightPrice = 3.5
+  const freightPriceFormatted = useMemo(() => {
+    return formatValue(freightPrice)
+  }, [])
+
   const [paymentType, setPaymentType] = useState('')
+  const { coffees, increaseItemQuantityInCart, decreaseItemQuantityInCart } =
+    useContext(CheckoutContext)
 
   function handleSelectPaymentType(type: string) {
     setPaymentType(type)
   }
+
+  function handleAddQuantityItem(id: number) {
+    increaseItemQuantityInCart(id)
+  }
+
+  function handleReduceQuantityItem(id: number) {
+    decreaseItemQuantityInCart(id)
+  }
+
+  const { totalItens, totalCheckout } = useMemo(() => {
+    const { totalItens }: IBalance = coffees.reduce(
+      (accumulator: IBalance, coffee: ICoffeProps) => {
+        accumulator.totalItens += coffee.price * coffee.quantity
+
+        return accumulator
+      },
+      {
+        totalItens: 0,
+        totalCheckout: 0,
+      },
+    )
+
+    const totalItensFormatted = formatValue(+totalItens.toFixed(2))
+    const totalCheckoutFormatted = formatValue(
+      +(totalItens + freightPrice).toFixed(2),
+    )
+
+    return {
+      totalItens: totalItensFormatted,
+      totalCheckout: totalCheckoutFormatted,
+    }
+  }, [coffees])
 
   return (
     <S.CheckoutContainer>
@@ -86,32 +131,28 @@ export function Checkout() {
 
         <S.SumaryContent>
           <S.CoffeList>
-            <CoffeeItemSummary
-              image={expressoImg}
-              title="Expresso Tradicional"
-              price="R$ 9,90"
-              quantity={1}
-            />
-            <CoffeeItemSummary
-              image={latteImg}
-              title="Latte"
-              price="R$ 19,80"
-              quantity={1}
-            />
+            {coffees.map((coffee) => (
+              <CoffeeItemSummary
+                key={coffee.id}
+                coffee={coffee}
+                onAddQuantity={() => handleAddQuantityItem(coffee.id)}
+                onReduceQuantity={() => handleReduceQuantityItem(coffee.id)}
+              />
+            ))}
           </S.CoffeList>
 
           <S.SummaryInfo>
             <S.SummaryValue>
               <p>Total de itens</p>
-              <p>R$ 29,70</p>
+              <p>{totalItens}</p>
             </S.SummaryValue>
             <S.SummaryValue>
               <p>Entrega</p>
-              <p>R$ 3,50</p>
+              <p>{freightPriceFormatted}</p>
             </S.SummaryValue>
             <S.TotalValue>
               <p>Total</p>
-              <p>R$ 33,20</p>
+              <p>{totalCheckout}</p>
             </S.TotalValue>
           </S.SummaryInfo>
 

@@ -1,11 +1,17 @@
 import { createContext, ReactNode, useMemo, useReducer } from 'react'
-import { addItemToCartAction } from '../reducers/checkout/actions'
+import {
+  addItemToCartAction,
+  increaseQuantityItemInCartAction,
+  decreaseQuantityItemInCartAction,
+} from '../reducers/checkout/actions'
 import { checkoutReducer, ICoffeProps } from '../reducers/checkout/reducers'
 
 interface ICheckoutContextProps {
   coffees: ICoffeProps[]
   totalItensCheckout: number
   addToCart: (coffee: ICoffeProps) => void
+  increaseItemQuantityInCart: (id: number) => void
+  decreaseItemQuantityInCart: (id: number) => void
 }
 
 interface ICheckoutContextProviderProps {
@@ -33,6 +39,13 @@ export function CheckoutcontextProvider({
   function addToCart(data: ICoffeProps) {
     dispatch(addItemToCartAction(data))
   }
+  function increaseItemQuantityInCart(id: number) {
+    dispatch(increaseQuantityItemInCartAction(id))
+  }
+
+  function decreaseItemQuantityInCart(id: number) {
+    dispatch(decreaseQuantityItemInCartAction(id))
+  }
 
   return (
     <CheckoutContext.Provider
@@ -40,6 +53,8 @@ export function CheckoutcontextProvider({
         coffees,
         totalItensCheckout,
         addToCart,
+        increaseItemQuantityInCart,
+        decreaseItemQuantityInCart,
       }}
     >
       {children}

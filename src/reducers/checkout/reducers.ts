@@ -7,7 +7,7 @@ export interface ICoffeProps {
   tags: string[]
   title: string
   description: string
-  price: string
+  price: number
   quantity: number
 }
 
@@ -47,7 +47,7 @@ export function checkoutReducer(state: ICheckoutStateProps, action: any) {
 
       return produce(state, (draft) => {
         const hasMinimumQuantity =
-          draft.coffees[currentCoffeeIndex].quantity < 0
+          draft.coffees[currentCoffeeIndex].quantity > 1
 
         if (hasMinimumQuantity) {
           draft.coffees[currentCoffeeIndex].quantity -= 1

@@ -44,15 +44,6 @@ export function Home() {
 
   function handleAddToCart(newCoffee: ICoffeProps) {
     addToCart(newCoffee)
-
-    // const coffeesUpdated = coffees.map((coffee) => {
-    //   if (newCoffee.id === coffee.id) {
-    //     coffee.quantity = 1
-    //   }
-    //   return coffee
-    // })
-
-    // setCoffees(coffeesUpdated)
   }
 
   return (
