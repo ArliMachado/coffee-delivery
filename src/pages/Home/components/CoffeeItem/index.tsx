@@ -2,7 +2,10 @@ import { ShoppingCartSimple } from 'phosphor-react'
 import { useMemo } from 'react'
 import { QuantityButtons } from '../../../../components/QuantityButtons'
 import { ICoffeProps } from '../../../../reducers/checkout/reducers'
-import formatValue from '../../../../utils/formatValue'
+import {
+  formatValue,
+  formatValueToCurrency,
+} from '../../../../utils/formatValue'
 import * as S from './styles'
 
 interface ICoffeItemProps {
@@ -48,7 +51,7 @@ export function CoffeeItem({
       <S.CartContent>
         <span>
           R$
-          <strong>{price}</strong>
+          <strong>{itemPriceFormatted}</strong>
         </span>
         <S.CartButtons>
           <QuantityButtons

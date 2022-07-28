@@ -12,7 +12,7 @@ import * as S from './styles'
 import { CheckoutContext } from '../../contexts/CheckoutContext'
 import { CoffeeItemSummary } from './components/CoffeeItemSummary'
 import { ICoffeProps } from '../../reducers/checkout/reducers'
-import formatValue from '../../utils/formatValue'
+import { formatValueToCurrency } from '../../utils/formatValue'
 
 interface IBalance {
   totalItens: number
@@ -22,7 +22,7 @@ interface IBalance {
 export function Checkout() {
   const freightPrice = 3.5
   const freightPriceFormatted = useMemo(() => {
-    return formatValue(freightPrice)
+    return formatValueToCurrency(freightPrice)
   }, [])
 
   const [paymentType, setPaymentType] = useState('')
@@ -62,8 +62,8 @@ export function Checkout() {
       },
     )
 
-    const totalItensFormatted = formatValue(+totalItens.toFixed(2))
-    const totalCheckoutFormatted = formatValue(
+    const totalItensFormatted = formatValueToCurrency(+totalItens.toFixed(2))
+    const totalCheckoutFormatted = formatValueToCurrency(
       +(totalItens + freightPrice).toFixed(2),
     )
 

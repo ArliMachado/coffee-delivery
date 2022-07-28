@@ -1,7 +1,7 @@
 import { Trash } from 'phosphor-react'
 import { useMemo } from 'react'
 import { QuantityButtons } from '../../../../components/QuantityButtons'
-import formatValue from '../../../../utils/formatValue'
+import { formatValueToCurrency } from '../../../../utils/formatValue'
 import * as S from './styles'
 
 interface ICoffeeSummary {
@@ -38,7 +38,7 @@ export function CoffeeItemSummary({
   }
 
   const itemPriceFormatted = useMemo(() => {
-    return formatValue(price)
+    return formatValueToCurrency(price)
   }, [price])
 
   return (
