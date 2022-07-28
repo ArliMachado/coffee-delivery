@@ -4,12 +4,13 @@ import coffeesJson from '../../data/coffees.json'
 
 import * as S from './styles'
 import { CoffeeItem } from './components/CoffeeItem'
-import { useEffect, useState } from 'react'
-
-type CoffeeProps = typeof coffeesJson
+import { useContext, useEffect, useState } from 'react'
+import { CheckoutContext } from '../../contexts/CheckoutContext'
+import { ICoffeProps } from '../../reducers/checkout/reducers'
 
 export function Home() {
-  const [coffees, setCoffees] = useState<CoffeeProps>([])
+  const [coffees, setCoffees] = useState<ICoffeProps[]>([])
+  const { addToCart } = useContext(CheckoutContext)
 
   useEffect(() => {
     function loadCoffees() {
@@ -41,7 +42,18 @@ export function Home() {
     setCoffees(coffeesUpdated)
   }
 
-  function handleAddToCart(coffee: CoffeeProps) {}
+  function handleAddToCart(newCoffee: ICoffeProps) {
+    addToCart(newCoffee)
+
+    // const coffeesUpdated = coffees.map((coffee) => {
+    //   if (newCoffee.id === coffee.id) {
+    //     coffee.quantity = 1
+    //   }
+    //   return coffee
+    // })
+
+    // setCoffees(coffeesUpdated)
+  }
 
   return (
     <S.HomeContainer>
@@ -52,7 +64,9 @@ export function Home() {
         <S.CoffeesList>
           {coffees.map((coffee) => (
             <CoffeeItem
-              onAddToCart={() => {}}
+              onAddToCart={() => {
+                handleAddToCart(coffee)
+              }}
               key={coffee.id}
               coffee={coffee}
               onAddQuantity={() => addCoffeeQuantity(coffee.id)}

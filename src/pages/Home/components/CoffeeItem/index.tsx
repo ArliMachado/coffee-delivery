@@ -1,16 +1,7 @@
 import { ShoppingCartSimple } from 'phosphor-react'
 import { QuantityButtons } from '../../../../components/QuantityButtons'
+import { ICoffeProps } from '../../../../reducers/checkout/reducers'
 import * as S from './styles'
-
-interface ICoffeProps {
-  id: number
-  image: string
-  tags: string[]
-  title: string
-  description: string
-  price: string
-  quantity: number
-}
 
 interface ICoffeItemProps {
   coffee: ICoffeProps
