@@ -26,8 +26,12 @@ export function Checkout() {
   }, [])
 
   const [paymentType, setPaymentType] = useState('')
-  const { coffees, increaseItemQuantityInCart, decreaseItemQuantityInCart } =
-    useContext(CheckoutContext)
+  const {
+    coffees,
+    increaseItemQuantityInCart,
+    decreaseItemQuantityInCart,
+    removeItemFromCart,
+  } = useContext(CheckoutContext)
 
   function handleSelectPaymentType(type: string) {
     setPaymentType(type)
@@ -39,6 +43,10 @@ export function Checkout() {
 
   function handleReduceQuantityItem(id: number) {
     decreaseItemQuantityInCart(id)
+  }
+
+  function handleRemoveItemFromCart(id: number) {
+    removeItemFromCart(id)
   }
 
   const { totalItens, totalCheckout } = useMemo(() => {
@@ -137,6 +145,7 @@ export function Checkout() {
                 coffee={coffee}
                 onAddQuantity={() => handleAddQuantityItem(coffee.id)}
                 onReduceQuantity={() => handleReduceQuantityItem(coffee.id)}
+                onRemoveItem={() => handleRemoveItemFromCart(coffee.id)}
               />
             ))}
           </S.CoffeList>

@@ -33,7 +33,7 @@ export function decreaseQuantityItemInCartAction(id: number) {
   }
 }
 
-export function removeItemFromCart(id: number) {
+export function removeItemFromCartAction(id: number) {
   return {
     type: Actiontypes.REMOVE_ITEM_FROM_CART,
     payload: {

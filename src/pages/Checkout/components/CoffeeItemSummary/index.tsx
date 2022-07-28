@@ -14,12 +14,14 @@ interface ICoffeeItemSummary {
   coffee: ICoffeeSummary
   onAddQuantity: () => void
   onReduceQuantity: () => void
+  onRemoveItem: () => void
 }
 
 export function CoffeeItemSummary({
   coffee,
   onAddQuantity,
   onReduceQuantity,
+  onRemoveItem,
 }: ICoffeeItemSummary) {
   const { image, title, price, quantity } = coffee
 
@@ -29,6 +31,10 @@ export function CoffeeItemSummary({
 
   function handleReduceQuantity() {
     onReduceQuantity()
+  }
+
+  function handleRemoveItem() {
+    onRemoveItem()
   }
 
   const itemPriceFormatted = useMemo(() => {
@@ -50,7 +56,7 @@ export function CoffeeItemSummary({
             quantity={quantity}
             size="small"
           />
-          <S.RemoveButton>
+          <S.RemoveButton onClick={handleRemoveItem}>
             <Trash size={16} />
             REMOVER
           </S.RemoveButton>

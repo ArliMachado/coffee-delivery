@@ -55,10 +55,15 @@ export function checkoutReducer(state: ICheckoutStateProps, action: any) {
       })
     }
 
-    case Actiontypes.REMOVE_ITEM_FROM_CART:
+    case Actiontypes.REMOVE_ITEM_FROM_CART: {
+      const newList = state.coffees.filter(
+        (coffee) => coffee.id !== action.payload.id,
+      )
+
       return produce(state, (draft) => {
-        draft.coffees.filter((coffee) => coffee.id !== action.payload.id)
+        draft.coffees = newList
       })
+    }
 
     default:
       return state

@@ -3,6 +3,7 @@ import {
   addItemToCartAction,
   increaseQuantityItemInCartAction,
   decreaseQuantityItemInCartAction,
+  removeItemFromCartAction,
 } from '../reducers/checkout/actions'
 import { checkoutReducer, ICoffeProps } from '../reducers/checkout/reducers'
 
@@ -12,6 +13,7 @@ interface ICheckoutContextProps {
   addToCart: (coffee: ICoffeProps) => void
   increaseItemQuantityInCart: (id: number) => void
   decreaseItemQuantityInCart: (id: number) => void
+  removeItemFromCart: (id: number) => void
 }
 
 interface ICheckoutContextProviderProps {
@@ -47,6 +49,10 @@ export function CheckoutcontextProvider({
     dispatch(decreaseQuantityItemInCartAction(id))
   }
 
+  function removeItemFromCart(id: number) {
+    dispatch(removeItemFromCartAction(id))
+  }
+
   return (
     <CheckoutContext.Provider
       value={{
@@ -55,6 +61,7 @@ export function CheckoutcontextProvider({
         addToCart,
         increaseItemQuantityInCart,
         decreaseItemQuantityInCart,
+        removeItemFromCart,
       }}
     >
       {children}
