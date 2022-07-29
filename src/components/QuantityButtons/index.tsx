@@ -18,12 +18,12 @@ export function QuantityButtons({
 }: IQuantityButtonsProps) {
   return (
     <S.Container size={size}>
-      <button onClick={() => onReduceQuantity()}>
+      <button type="button" onClick={() => onReduceQuantity()}>
         <Minus weight="bold" size={14} />
       </button>
       <span>{quantity}</span>
 
-      <button onClick={() => onAddQuantity()}>
+      <button type="button" onClick={() => onAddQuantity()}>
         <Plus weight="bold" size={14} />
       </button>
     </S.Container>

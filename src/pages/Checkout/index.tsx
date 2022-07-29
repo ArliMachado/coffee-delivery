@@ -1,3 +1,4 @@
+import { useContext, useMemo, useState } from 'react'
 import {
   Bank,
   CreditCard,
@@ -5,10 +6,13 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
-import { useContext, useMemo, useState } from 'react'
-import { NewFormAddress } from './components/NewFormAddress'
+import * as zod from 'zod'
+import { FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
 import * as S from './styles'
 
+import { NewFormAddress } from './components/NewFormAddress'
 import { CheckoutContext } from '../../contexts/CheckoutContext'
 import { CoffeeItemSummary } from './components/CoffeeItemSummary'
 import { ICoffeProps } from '../../reducers/checkout/reducers'
@@ -18,6 +22,21 @@ interface IBalance {
   totalItens: number
   totalCheckout: number
 }
+
+const newAddressFormValidationSchema = zod.object({
+  cep: zod
+    .number()
+    .min(8, 'O cep precisa ter no mínimo 8 numeros')
+    .max(8, 'O cep precisa ter no máximo 8 numeros'),
+  street: zod.string().min(1, 'Informe o nome da rua'),
+  number: zod.number().min(1, 'Informe o numero da casa'),
+  complement: zod.string(),
+  district: zod.string().min(1, 'Informe o bairro'),
+  city: zod.string().min(1, 'Informe a cidade'),
+  state: zod.string().min(2, 'Informe o Estado').max(2, 'Informe o Estado'),
+})
+
+type NewAddressFormData = zod.infer<typeof newAddressFormValidationSchema>
 
 export function Checkout() {
   const freightPrice = 3.5
@@ -33,6 +52,21 @@ export function Checkout() {
     removeItemFromCart,
   } = useContext(CheckoutContext)
 
+  const newAddressForm = useForm<NewAddressFormData>({
+    resolver: zodResolver(newAddressFormValidationSchema),
+    defaultValues: {
+      cep: 0,
+      street: '',
+      number: 0,
+      complement: '',
+      district: '',
+      city: '',
+      state: '',
+    },
+  })
+
+  const { handleSubmit, reset } = newAddressForm
+
   function handleSelectPaymentType(type: string) {
     setPaymentType(type)
   }
@@ -47,6 +81,10 @@ export function Checkout() {
 
   function handleRemoveItemFromCart(id: number) {
     removeItemFromCart(id)
+  }
+
+  function handleAddAddress(data: NewAddressFormData) {
+    console.log(data)
   }
 
   const { totalItens, totalCheckout } = useMemo(() => {
@@ -87,8 +125,14 @@ export function Checkout() {
             </S.Title>
           </S.TitleInfo>
 
-          <form action="">
-            <NewFormAddress />
+          <form
+            id="addressForm"
+            onSubmit={handleSubmit(handleAddAddress)}
+            action=""
+          >
+            <FormProvider {...newAddressForm}>
+              <NewFormAddress />
+            </FormProvider>
           </form>
         </S.AddressContainer>
 
@@ -165,7 +209,9 @@ export function Checkout() {
             </S.TotalValue>
           </S.SummaryInfo>
 
-          <S.ConfirmButton>CONFIRMAR PEDIDO</S.ConfirmButton>
+          <S.ConfirmButton type="submit" form="addressForm">
+            CONFIRMAR PEDIDO
+          </S.ConfirmButton>
         </S.SumaryContent>
       </S.CheckoutSumaryContainer>
     </S.CheckoutContainer>
