@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { MapPin, ShoppingCart } from 'phosphor-react'
 import { NavLink } from 'react-router-dom'

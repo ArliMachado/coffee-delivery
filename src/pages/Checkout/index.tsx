@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import {
   Bank,
   CreditCard,
@@ -9,6 +9,7 @@ import {
 import * as zod from 'zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from 'react-router-dom'
 
 import * as S from './styles'
 
@@ -17,19 +18,22 @@ import { CheckoutContext } from '../../contexts/CheckoutContext'
 import { CoffeeItemSummary } from './components/CoffeeItemSummary'
 import { ICoffeProps } from '../../reducers/checkout/reducers'
 import { formatValueToCurrency } from '../../utils/formatValue'
+import paymentsJson from '../../data/payments.json'
 
 interface IBalance {
   totalItens: number
   totalCheckout: number
 }
 
+interface IPaymentTypeProps {
+  type: string
+  description: string
+}
+
 const newAddressFormValidationSchema = zod.object({
-  cep: zod
-    .number()
-    .min(8, 'O cep precisa ter no mínimo 8 numeros')
-    .max(8, 'O cep precisa ter no máximo 8 numeros'),
+  cep: zod.string().length(8, 'O cep precisa ter no mínimo 8 numeros'),
   street: zod.string().min(1, 'Informe o nome da rua'),
-  number: zod.number().min(1, 'Informe o numero da casa'),
+  number: zod.string().min(1, 'Informe o numero da casa'),
   complement: zod.string(),
   district: zod.string().min(1, 'Informe o bairro'),
   city: zod.string().min(1, 'Informe a cidade'),
@@ -38,37 +42,43 @@ const newAddressFormValidationSchema = zod.object({
 
 type NewAddressFormData = zod.infer<typeof newAddressFormValidationSchema>
 
+export type OrderProps = {
+  address: NewAddressFormData
+  payment: IPaymentTypeProps
+}
+
 export function Checkout() {
+  const [payments, setPayments] = useState([] as IPaymentTypeProps[])
+  const [paymentSelected, setPaymentSelected] = useState(
+    {} as IPaymentTypeProps,
+  )
   const freightPrice = 3.5
+  const navigate = useNavigate()
+
   const freightPriceFormatted = useMemo(() => {
     return formatValueToCurrency(freightPrice)
   }, [])
 
-  const [paymentType, setPaymentType] = useState('')
   const {
     coffees,
     increaseItemQuantityInCart,
     decreaseItemQuantityInCart,
     removeItemFromCart,
+    deleteCart,
   } = useContext(CheckoutContext)
 
   const newAddressForm = useForm<NewAddressFormData>({
     resolver: zodResolver(newAddressFormValidationSchema),
-    defaultValues: {
-      cep: 0,
-      street: '',
-      number: 0,
-      complement: '',
-      district: '',
-      city: '',
-      state: '',
-    },
   })
 
-  const { handleSubmit, reset } = newAddressForm
+  const { handleSubmit, reset, formState } = newAddressForm
 
-  function handleSelectPaymentType(type: string) {
-    setPaymentType(type)
+  useEffect(() => {
+    setPayments(paymentsJson)
+  }, [])
+
+  function handleSelectPaymentType(payment: IPaymentTypeProps) {
+    setPaymentSelected(payment)
   }
 
   function handleAddQuantityItem(id: number) {
@@ -83,8 +93,20 @@ export function Checkout() {
     removeItemFromCart(id)
   }
 
-  function handleAddAddress(data: NewAddressFormData) {
-    console.log(data)
+  function handleFinishOrder(data: NewAddressFormData) {
+    const order: OrderProps = {
+      address: data,
+      payment: paymentSelected,
+    }
+
+    const orderJson = JSON.stringify(order)
+
+    localStorage.setItem('@ignite-desafio:coffee-delivery:order', orderJson)
+
+    deleteCart()
+
+    navigate('/success', { replace: true })
+    // navigate({ })
   }
 
   const { totalItens, totalCheckout } = useMemo(() => {
@@ -127,7 +149,7 @@ export function Checkout() {
 
           <form
             id="addressForm"
-            onSubmit={handleSubmit(handleAddAddress)}
+            onSubmit={handleSubmit(handleFinishOrder)}
             action=""
           >
             <FormProvider {...newAddressForm}>
@@ -148,32 +170,17 @@ export function Checkout() {
           </S.TitleInfo>
 
           <S.PaymentTypeContent>
-            <S.RadioBox
-              type="button"
-              onClick={() => handleSelectPaymentType('creditCard')}
-              isActive={paymentType === 'creditCard'}
-            >
-              <CreditCard size={16} />
-              <p>CARTÃO DE CRÉDITO</p>
-            </S.RadioBox>
-
-            <S.RadioBox
-              type="button"
-              onClick={() => handleSelectPaymentType('debit')}
-              isActive={paymentType === 'debit'}
-            >
-              <Bank size={16} />
-              <p>CARTÃO DE DÉBITO</p>
-            </S.RadioBox>
-
-            <S.RadioBox
-              type="button"
-              onClick={() => handleSelectPaymentType('cash')}
-              isActive={paymentType === 'cash'}
-            >
-              <Money size={16} />
-              <p>DINHEIRO</p>
-            </S.RadioBox>
+            {payments.map((payment) => (
+              <S.RadioBox
+                key={payment.type}
+                type="button"
+                onClick={() => handleSelectPaymentType(payment)}
+                isActive={paymentSelected.type === payment.type}
+              >
+                <CreditCard size={16} />
+                <p>{payment.description}</p>
+              </S.RadioBox>
+            ))}
           </S.PaymentTypeContent>
         </S.PaymentContainer>
       </S.CheckoutForm>

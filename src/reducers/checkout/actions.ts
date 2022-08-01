@@ -5,6 +5,7 @@ export enum Actiontypes {
   INCREASE_QUANTITY_ITEM_IN_CART = 'INCREASE_QUANTITY_ITEM_IN_CART',
   DECREASE_QUANTITY_ITEM_IN_CART = 'DECREASE_QUANTITY_ITEM_IN_CART',
   REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART',
+  DELETE_CART = 'DELETE_CART',
 }
 
 export function addItemToCartAction(newCoffee: ICoffeProps) {
@@ -39,5 +40,11 @@ export function removeItemFromCartAction(id: number) {
     payload: {
       id,
     },
+  }
+}
+
+export function deleteCartAction() {
+  return {
+    type: Actiontypes.DELETE_CART,
   }
 }

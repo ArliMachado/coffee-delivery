@@ -4,6 +4,7 @@ import {
   increaseQuantityItemInCartAction,
   decreaseQuantityItemInCartAction,
   removeItemFromCartAction,
+  deleteCartAction,
 } from '../reducers/checkout/actions'
 import { checkoutReducer, ICoffeProps } from '../reducers/checkout/reducers'
 
@@ -14,6 +15,7 @@ interface ICheckoutContextProps {
   increaseItemQuantityInCart: (id: number) => void
   decreaseItemQuantityInCart: (id: number) => void
   removeItemFromCart: (id: number) => void
+  deleteCart: () => void
 }
 
 interface ICheckoutContextProviderProps {
@@ -30,14 +32,20 @@ export function CheckoutcontextProvider({
     {
       coffees: [],
     },
-    () => {
-      const storedStateAsJSON = localStorage.getItem(
+
+    // TODO corrigir quando remover a força o localStorage
+    (initial) => {
+      let storedStateAsJSON
+
+      const storedStateString = localStorage.getItem(
         '@ignite-desafio:coffee-delivery',
       )
 
-      if (storedStateAsJSON) {
-        return JSON.parse(storedStateAsJSON)
+      if (storedStateString) {
+        storedStateAsJSON = JSON.parse(storedStateString)
       }
+
+      return storedStateAsJSON || initial
     },
   )
 
@@ -65,6 +73,11 @@ export function CheckoutcontextProvider({
     dispatch(removeItemFromCartAction(id))
   }
 
+  function deleteCart() {
+    dispatch(deleteCartAction())
+    localStorage.removeItem('@ignite-desafio:coffee-delivery')
+  }
+
   useEffect(() => {
     const stateJSON = JSON.stringify(checkoutState)
     localStorage.setItem('@ignite-desafio:coffee-delivery', stateJSON)
@@ -79,6 +92,7 @@ export function CheckoutcontextProvider({
         increaseItemQuantityInCart,
         decreaseItemQuantityInCart,
         removeItemFromCart,
+        deleteCart,
       }}
     >
       {children}

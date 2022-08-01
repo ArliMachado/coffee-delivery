@@ -1,0 +1,14 @@
+[
+  {
+    "type": "creditCard",
+    "description": "CARTÃO DE CRÉDITO"
+  },
+  {
+    "type": "debit",
+    "description": "CARTÃO DE DÉBITO"
+  },
+  {
+    "type": "cash",
+    "description": "DINHEIRO"
+  }
+]

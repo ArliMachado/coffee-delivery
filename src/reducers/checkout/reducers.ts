@@ -65,6 +65,12 @@ export function checkoutReducer(state: ICheckoutStateProps, action: any) {
       })
     }
 
+    case Actiontypes.DELETE_CART: {
+      return produce(state, (draft) => {
+        draft.coffees = []
+      })
+    }
+
     default:
       return state
   }

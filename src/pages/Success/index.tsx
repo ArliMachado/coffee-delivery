@@ -1,9 +1,25 @@
-import * as S from './styles'
-
-import successImg from '../../assets/successImage.svg'
+import { useEffect, useState } from 'react'
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
 
+import successImg from '../../assets/successImage.svg'
+import { OrderProps } from '../Checkout'
+import * as S from './styles'
+
 export function Success() {
+  const [order, setOrder] = useState(() => {
+    const orderJson = localStorage.getItem(
+      '@ignite-desafio:coffee-delivery:order',
+    )
+    let parsedOrder
+    if (orderJson) {
+      parsedOrder = JSON.parse(orderJson)
+    }
+
+    return parsedOrder || {}
+  })
+
+  const { address, payment } = order
+
   return (
     <S.Container>
       <S.TitleInfo>
@@ -19,9 +35,10 @@ export function Success() {
             </S.IconContent>
             <span>
               <p>
-                Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                Entrega em{' '}
+                <strong>{`${address.street}, ${address.number}`}</strong>
               </p>
-              <p>Farrapos - Porto Alegre, RS</p>
+              <p>{`${address.district} - ${address.city}, ${address.state}`}</p>
             </span>
           </S.OrderInfoSummary>
 
@@ -42,7 +59,7 @@ export function Success() {
             </S.IconContent>
             <span>
               <p>Pagamento na entrega</p>
-              <strong>Cartão de Crédito</strong>
+              <strong>{payment.description}</strong>
             </span>
           </S.OrderInfoSummary>
         </S.OrderInfo>
