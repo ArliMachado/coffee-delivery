@@ -1,24 +1,18 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
-import {
-  Bank,
-  CreditCard,
-  CurrencyDollar,
-  MapPinLine,
-  Money,
-} from 'phosphor-react'
-import * as zod from 'zod'
-import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { CreditCard, CurrencyDollar, MapPinLine } from 'phosphor-react'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import * as zod from 'zod'
 
 import * as S from './styles'
 
-import { NewFormAddress } from './components/NewFormAddress'
 import { CheckoutContext } from '../../contexts/CheckoutContext'
-import { CoffeeItemSummary } from './components/CoffeeItemSummary'
+import paymentsJson from '../../data/payments.json'
 import { ICoffeProps } from '../../reducers/checkout/reducers'
 import { formatValueToCurrency } from '../../utils/formatValue'
-import paymentsJson from '../../data/payments.json'
+import { CoffeeItemSummary } from './components/CoffeeItemSummary'
+import { NewFormAddress } from './components/NewFormAddress'
 
 interface IBalance {
   totalItens: number
@@ -31,7 +25,7 @@ interface IPaymentTypeProps {
 }
 
 const newAddressFormValidationSchema = zod.object({
-  cep: zod.string().length(8, 'O cep precisa ter no mínimo 8 numeros'),
+  cep: zod.string().length(8, 'O cep precisa ter 8 numeros'),
   street: zod.string().min(1, 'Informe o nome da rua'),
   number: zod.string().min(1, 'Informe o numero da casa'),
   complement: zod.string(),
@@ -71,7 +65,7 @@ export function Checkout() {
     resolver: zodResolver(newAddressFormValidationSchema),
   })
 
-  const { handleSubmit, reset, formState } = newAddressForm
+  const { handleSubmit, formState } = newAddressForm
 
   useEffect(() => {
     setPayments(paymentsJson)
@@ -94,6 +88,8 @@ export function Checkout() {
   }
 
   function handleFinishOrder(data: NewAddressFormData) {
+    console.log('aqui')
+
     const order: OrderProps = {
       address: data,
       payment: paymentSelected,
@@ -101,12 +97,13 @@ export function Checkout() {
 
     const orderJson = JSON.stringify(order)
 
+    console.log(orderJson)
+
     localStorage.setItem('@ignite-desafio:coffee-delivery:order', orderJson)
 
     deleteCart()
 
     navigate('/success', { replace: true })
-    // navigate({ })
   }
 
   const { totalItens, totalCheckout } = useMemo(() => {
@@ -153,7 +150,7 @@ export function Checkout() {
             action=""
           >
             <FormProvider {...newAddressForm}>
-              <NewFormAddress />
+              <NewFormAddress errors={formState.errors} />
             </FormProvider>
           </form>
         </S.AddressContainer>

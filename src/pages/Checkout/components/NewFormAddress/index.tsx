@@ -1,35 +1,69 @@
+import { FieldErrorsImpl } from 'react-hook-form'
 import * as S from './styles'
-import { useFormContext } from 'react-hook-form'
 
-export function NewFormAddress() {
-  const { register } = useFormContext()
+interface INewFormAddress {
+  errors: FieldErrorsImpl
+}
+
+export function NewFormAddress({ errors }: INewFormAddress) {
   return (
     <S.NewFormAddressContainer>
-      <S.CepInput type="number" placeholder="CEP" {...register('cep')} />
-      <S.StreetInput type="text" placeholder="Rua" {...register('street')} />
+      <S.CepInput
+        inputName="cep"
+        errors={errors}
+        type="number"
+        placeholder="CEP"
+      />
+
+      <S.StreetInput
+        inputName="street"
+        errors={errors}
+        type="text"
+        placeholder="Rua"
+      />
+
       <S.NumberInfo>
         <S.NumberInput
+          inputName="number"
+          errors={errors}
           type="number"
           placeholder="Número"
-          {...register('number')}
         />
+
         <S.ComplementInfo>
           <p>(Opcional)</p>
           <S.ComplementInput
+            inputName="complement"
+            errors={errors}
             type="text"
             placeholder="Complemento"
-            {...register('complement')}
+            containerStyle={{ width: '100%' }}
           />
         </S.ComplementInfo>
       </S.NumberInfo>
       <S.CityInfo>
         <S.DistrictInput
+          inputName="district"
+          errors={errors}
           type="text"
           placeholder="Bairro"
-          {...register('district')}
         />
-        <S.CitytInput type="text" placeholder="Cidade" {...register('city')} />
-        <S.StateInput type="text" placeholder="UF" {...register('state')} />
+
+        <S.CitytInput
+          inputName="city"
+          errors={errors}
+          type="text"
+          placeholder="Cidade"
+          containerStyle={{ width: '100%' }}
+        />
+
+        <S.StateInput
+          inputName="state"
+          errors={errors}
+          type="text"
+          placeholder="UF"
+          maxLength={2}
+        />
       </S.CityInfo>
     </S.NewFormAddressContainer>
   )

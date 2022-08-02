@@ -67,7 +67,7 @@ export const Title = styled.span`
 `
 
 export const AddressContainer = styled(BaseContainer)`
-  height: 23.25rem;
+  min-height: 23.25rem;
 `
 
 export const PaymentContainer = styled(BaseContainer)`
